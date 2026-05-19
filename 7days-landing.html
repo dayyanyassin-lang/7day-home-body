@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>7 Days — Your Transformation Starts Today</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0eb;
+    --fire: #E84B1A;
+    --gold: #C9A84C;
+    --mid: #1c1c1c;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--fire);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid var(--fire);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* ───── HERO ───── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 4rem 6rem 6rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--fire);
+    border: 1px solid var(--fire);
+    padding: 0.35rem 0.9rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(9rem, 16vw, 18rem);
+    line-height: 0.85;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+    position: relative;
+  }
+
+  .hero-number span {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+    margin-top: 0.3rem;
+  }
+
+  .hero-desc {
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(245,240,235,0.55);
+    max-width: 360px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    background: var(--fire);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.9s forwards;
+    transition: gap 0.3s;
+  }
+  .hero-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+  .hero-cta:hover::after { transform: translateX(0); }
+  .hero-cta:hover { gap: 1.25rem; }
+
+  /* HERO RIGHT */
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-visual {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 60% 50%, rgba(232,75,26,0.18) 0%, transparent 70%),
+      linear-gradient(135deg, #0a0a0a 0%, #1a0d08 100%);
+    animation: pulseGlow 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    from { opacity: 0.8; }
+    to   { opacity: 1; }
+  }
+
+  .big-seven {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(16rem, 28vw, 36rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(232,75,26,0.25);
+    position: absolute;
+    right: -2rem;
+    user-select: none;
+    animation: floatNum 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatNum {
+    from { transform: translateY(-10px) rotate(-2deg); }
+    to   { transform: translateY(10px) rotate(1deg); }
+  }
+
+  .badge-circle {
+    position: absolute;
+    bottom: 8%;
+    left: 10%;
+    width: 110px; height: 110px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: rotateBadge 20s linear infinite;
+    z-index: 3;
+  }
+  .badge-circle svg {
+    position: absolute; inset: 0;
+    animation: rotateBadge 20s linear infinite;
+  }
+  .badge-center {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    line-height: 1;
+    text-align: center;
+    z-index: 1;
+  }
+  @keyframes rotateBadge {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ───── STATS ───── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(245,240,235,0.08);
+    border-bottom: 1px solid rgba(245,240,235,0.08);
+    opacity: 0;
+    animation: fadeUp 1s 1.1s forwards;
+  }
+
+  .stat {
+    padding: 3rem;
+    border-right: 1px solid rgba(245,240,235,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .stat:last-child { border-right: none; }
+  .stat:hover { background: rgba(232,75,26,0.05); }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    color: var(--fire);
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,235,0.4);
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  /* ───── PROGRAM SECTION ───── */
+  .program {
+    padding: 8rem 6rem;
+    position: relative;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 5rem;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--fire);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    line-height: 0.9;
+    max-width: 500px;
+  }
+
+  .section-sub {
+    font-size: 0.85rem;
+    color: rgba(245,240,235,0.4);
+    max-width: 280px;
+    line-height: 1.7;
+    text-align: right;
+  }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: rgba(245,240,235,0.06);
+  }
+
+  .day-card {
+    background: var(--black);
+    padding: 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s, transform 0.3s;
+    cursor: none;
+  }
+  .day-card:hover {
+    background: var(--mid);
+    transform: translateY(-4px);
+  }
+  .day-card:hover .day-fill { width: 100%; }
+  .day-card:hover .day-icon { color: var(--fire); }
+
+  .day-fill {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--fire);
+    transition: width 0.4s ease;
+  }
+
+  .day-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: rgba(245,240,235,0.1);
+  }
+
+  .day-icon {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    transition: color 0.3s;
+  }
+
+  .day-name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  .day-focus {
+    font-size: 0.65rem;
+    color: rgba(245,240,235,0.4);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* ───── MARQUEE ───── */
+  .marquee-wrap {
+    background: var(--fire);
+    padding: 1.2rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-inner span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    padding: 0 2rem;
+  }
+  .marquee-inner span.dot { color: rgba(255,255,255,0.3); }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ───── FEATURES ───── */
+  .features {
+    padding: 8rem 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .features-left {
+    position: relative;
+  }
+
+  .book-mock {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #1a0d08 0%, #2a1510 100%);
+    border: 1px solid rgba(232,75,26,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 40px 40px 80px rgba(0,0,0,0.8), -2px 0 20px rgba(232,75,26,0.1);
+  }
+
+  .book-mock::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(232,75,26,0.12), transparent 60%);
+  }
+
+  .book-title-mock {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 7rem;
+    color: var(--white);
+    line-height: 0.9;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .book-sub-mock {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .book-stripe {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--fire);
+  }
+
+  .price-tag {
+    position: absolute;
+    top: -1.5rem; right: -1.5rem;
+    background: var(--gold);
+    color: var(--black);
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    z-index: 5;
+    animation: popBounce 2s ease-in-out infinite;
+  }
+  .price-tag small {
+    font-size: 0.55rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  @keyframes popBounce {
+    0%, 100% { transform: scale(1) rotate(-5deg); }
+    50% { transform: scale(1.05) rotate(-5deg); }
+  }
+
+  .features-right {}
+
+  .feature-item {
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(245,240,235,0.07);
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .feature-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .feature-icon {
+    font-size: 1.4rem;
+    min-width: 40px;
+    height: 40px;
+    background: rgba(232,75,26,0.1);
+    border: 1px solid rgba(232,75,26,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .feature-item:hover .feature-icon {
+    background: rgba(232,75,26,0.2);
+  }
+
+  .feature-text h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .feature-text p {
+    font-size: 0.8rem;
+    color: rgba(245,240,235,0.4);
+    line-height: 1.6;
+  }
+
+  /* ───── TESTIMONIALS ───── */
+  .testimonials {
+    padding: 6rem;
+    background: var(--mid);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .testi {
+    background: #111;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .testi:hover { background: #161616; }
+
+  .testi-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(245,240,235,0.8);
+    margin-bottom: 1.5rem;
+  }
+
+  .testi-author {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fire);
+  }
+
+  .testi-stars {
+    color: var(--gold);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .testi-decor {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(232,75,26,0.06);
+    line-height: 1;
+  }
+
+  /* ───── CTA FINAL ───── */
+  .final-cta {
+    padding: 10rem 6rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(232,75,26,0.12), transparent 70%);
+  }
+
+  .final-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 9vw, 10rem);
+    line-height: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-title em {
+    font-style: normal;
+    color: var(--fire);
+    display: block;
+  }
+
+  .final-sub {
+    font-size: 0.9rem;
+    color: rgba(245,240,235,0.4);
+    max-width: 400px;
+    margin: 2rem auto 3rem;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    background: var(--fire);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1.1rem 2.5rem;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1.1rem 2.5rem;
+    text-decoration: none;
+    border: 1px solid rgba(245,240,235,0.2);
+    cursor: none;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(245,240,235,0.5); transform: translateY(-2px); }
+
+  /* ───── FOOTER ───── */
+  footer {
+    padding: 3rem 6rem;
+    border-top: 1px solid rgba(245,240,235,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+  }
+  .footer-logo span { color: var(--fire); }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,235,0.35);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--fire); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 5rem 2rem; }
+    .stats { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid rgba(245,240,235,0.08); }
+    .days-grid { grid-template-columns: repeat(4, 1fr); }
+    .features { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    .program { padding: 4rem 2rem; }
+    .testimonials { grid-template-columns: 1fr; padding: 4rem 2rem; }
+    .final-cta { padding: 6rem 2rem; }
+    footer { flex-direction: column; gap: 2rem; padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="tag">The Program That Changes Everything</span>
+    <div class="hero-number">
+      7
+      <span>Days. No Excuses.</span>
+    </div>
+    <p class="hero-desc">
+      Seven workouts. Zero equipment. One week to prove to yourself
+      what you're truly made of. Your body doesn't need a gym — it needs you.
+    </p>
+    <a href="#get-book" class="hero-cta">
+      Start Today
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual"></div>
+    <div class="big-seven">7</div>
+
+    <!-- Rotating badge -->
+    <div class="badge-circle">
+      <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path id="circlePath" d="M55,55 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" fill="none"/>
+        <text fill="rgba(201,168,76,0.6)" font-size="9.5" font-family="DM Sans" letter-spacing="4" font-weight="500">
+          <textPath href="#circlePath">NO GYM · NO EXCUSES · NO LIMITS ·</textPath>
+        </text>
+      </svg>
+      <div class="badge-center">FREE<br>NOW</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-num">7</span>
+    <span class="stat-label">Days of Training</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">0</span>
+    <span class="stat-label">Equipment Needed</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">∞</span>
+    <span class="stat-label">Potential Inside You</span>
+  </div>
+</div>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span>7 Days</span><span class="dot">✦</span>
+    <span>Zero Equipment</span><span class="dot">✦</span>
+    <span>Full Transformation</span><span class="dot">✦</span>
+    <span>Your Body. Your Rules.</span><span class="dot">✦</span>
+    <span>Start Today</span><span class="dot">✦</span>
+    <span>7 Days</span><span class="dot">✦</span>
+    <span>Zero Equipment</span><span class="dot">✦</span>
+    <span>Full Transformation</span><span class="dot">✦</span>
+    <span>Your Body. Your Rules.</span><span class="dot">✦</span>
+    <span>Start Today</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ═══ PROGRAM ═══ -->
+<section class="program">
+  <div class="section-header">
+    <div>
+      <p class="section-label">The 7-Day Blueprint</p>
+      <h2 class="section-title">One Week.<br>Seven Battles.</h2>
+    </div>
+    <p class="section-sub">Each day targets a different muscle group and movement pattern, building toward a complete body transformation.</p>
+  </div>
+
+  <div class="days-grid">
+    <div class="day-card">
+      <div class="day-num">01</div>
+      <div class="day-icon">🔥</div>
+      <span class="day-name">Ignition</span>
+      <span class="day-focus">Full Body Activation</span>
+      <div class="day-fill"></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">02</div>
+      <div class="day-icon">💪</div>
+      <span class="day-name">Push</span>
+      <span class="day-focus">Chest · Shoulders · Triceps</span>
+      <div class="day-fill"></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">03</div>
+      <div class="day-icon">⚡</div>
+      <span class="day-name">Pull</span>
+      <span class="day-focus">Back · Biceps · Grip</span>
+      <div class="day-fill"></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">04</div>
+      <div class="day-icon">🦵</div>
+      <span class="day-name">Drive</span>
+      <span class="day-focus">Legs · Glutes · Core</span>
+      <div class="day-fill"></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">05</div>
+      <div class="day-icon">🌀</div>
+      <span class="day-name">Forge</span>
+      <span class="day-focus">Cardio · Endurance</span>
+      <div class="day-fill"></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">06</div>
+      <div class="day-icon">🎯</div>
+      <span class="day-name">Strike</span>
+      <span class="day-focus">Power · Explosiveness</span>
+      <div class="day-fill"></div>
+    </div>
+    <div class="day-card">
+      <div class="day-num">07</div>
+      <div class="day-icon">👑</div>
+      <span class="day-name">Ascend</span>
+      <span class="day-focus">Total Body Mastery</span>
+      <div class="day-fill"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="features">
+  <div class="features-left">
+    <div class="book-mock">
+      <div class="book-title-mock">7<br>DAYS</div>
+      <div class="book-sub-mock">Your Transformation</div>
+      <div class="book-stripe"></div>
+    </div>
+    <div class="price-tag">
+      <small>Get It</small>
+      FREE
+    </div>
+  </div>
+
+  <div class="features-right">
+    <p class="section-label">What's Inside</p>
+    <h2 class="section-title" style="margin-bottom: 2.5rem;">Built for the real world.</h2>
+
+    <div class="feature-item">
+      <div class="feature-icon">📱</div>
+      <div class="feature-text">
+        <h3>Anywhere. Anytime.</h3>
+        <p>No gym membership, no dumbbells, no excuses. Every workout requires nothing but your bodyweight and your will.</p>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">⏱</div>
+      <div class="feature-text">
+        <h3>Under 45 Minutes Daily</h3>
+        <p>Efficiency is the point. Each session is designed to maximize output in minimum time — perfect for busy lives.</p>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">📈</div>
+      <div class="feature-text">
+        <h3>Progressive by Design</h3>
+        <p>Each day builds on the last. By Day 7, you'll feel — and see — a difference that motivates you to keep going.</p>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="feature-icon">🧠</div>
+      <div class="feature-text">
+        <h3>Mind & Muscle Together</h3>
+        <p>Includes mental frameworks to build the habit, defeat resistance, and make movement a permanent part of your life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonials">
+  <div class="testi">
+    <div class="testi-decor">"</div>
+    <div class="testi-stars">★★★★★</div>
+    <p class="testi-quote">I was skeptical — one week can't really change anything. But by Day 4 I was sleeping better, standing straighter, and craving the next session.</p>
+    <span class="testi-author">— Nour A., 28</span>
+  </div>
+  <div class="testi">
+    <div class="testi-decor">"</div>
+    <div class="testi-stars">★★★★★</div>
+    <p class="testi-quote">No equipment means no more "I'll start when I get a gym membership." This book eliminated every excuse I had. Just me and the floor.</p>
+    <span class="testi-author">— Karim B., 34</span>
+  </div>
+  <div class="testi">
+    <div class="testi-decor">"</div>
+    <div class="testi-stars">★★★★★</div>
+    <p class="testi-quote">The real win isn't the physical change — it's the confidence that you can commit to something and see it through. Day 7 felt like a victory.</p>
+    <span class="testi-author">— Lina M., 31</span>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="final-cta" id="get-book">
+  <h2 class="final-title">
+    Your week<br>starts
+    <em>NOW.</em>
+  </h2>
+  <p class="final-sub">
+    Don't wait for Monday. Don't wait for the right mood.
+    Transformation happens in the moment you decide.
+  </p>
+  <div class="btn-group">
+    <a href="#" class="btn-primary">Get the Book — Free</a>
+    <a href="#" class="btn-secondary">See the Full Program</a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">7<span>DAYS</span></div>
+  <ul class="footer-links">
+    <li><a href="#">About</a></li>
+    <li><a href="#">Program</a></li>
+    <li><a href="#">Reviews</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p style="font-size:0.7rem; color: rgba(245,240,235,0.2); letter-spacing: 0.1em;">© 2026 — ALL RIGHTS RESERVED</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  // Intersection Observer for feature items
+  const items = document.querySelectorAll('.feature-item');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+      }
+    });
+  }, { threshold: 0.1 });
+  items.forEach(el => obs.observe(el));
+
+  // Counter animation for stats
+  function animCount(el, target, dur) {
+    let start = null;
+    if (target === '∞') { el.textContent = '∞'; return; }
+    const n = parseInt(target);
+    (function step(ts) {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / dur, 1);
+      el.textContent = Math.floor(p * n);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    })(performance.now());
+  }
+
+  const statNums = document.querySelectorAll('.stat-num');
+  const statObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const t = e.target.textContent;
+        animCount(e.target, t, 1200);
+        statObs.unobserve(e.target);
+      }
+    });
+  });
+  statNums.forEach(el => statObs.observe(el));
+</script>
+</body>
+</html>
